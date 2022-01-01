@@ -6,8 +6,8 @@ import java.io.*;
 public class ST{
 
 	// Lista de Hashes
-    List<String> hashes = new ArrayList<>();
-	
+    //List<String> hashes = new ArrayList<>();
+	 
     public static void main(String[] args) throws IOException{
         //socket server port on which it will listen
         int port = 2001;
@@ -22,5 +22,6 @@ public class ST{
             Thread t1 = new Thread(sv);
             t1.start();
         }
+
     }
 }

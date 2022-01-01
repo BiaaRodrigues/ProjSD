@@ -1,3 +1,4 @@
+//Lista de serviços registados
 
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -17,8 +18,10 @@ public class ListService implements Serializable {
             Service l = ListService.get(i);
             if (l.getkey().equals(list.getkey()))
             {
+                //alteração da descrição, tipo de tecnologia e Ip
                 ListService.get(i).setDesc(list.getDesc());
-                ListService.get(i).setTTecno(list.getDesc());
+                ListService.get(i).settTecno(list.gettTecno());
+                ListService.get(i).setIp(list.getIp());
                 newService = false;
             }
         }
