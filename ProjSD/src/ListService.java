@@ -1,6 +1,10 @@
+package ProjSD.src.Data;
 //Lista de serviços registados
 
 import java.util.ArrayList;
+
+import ProjSD.src.Data.Service;
+
 import java.io.Serializable;
 
 

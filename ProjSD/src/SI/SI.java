@@ -1,4 +1,4 @@
-
+package ProjSD.src.SI;
 
 import java.security.NoSuchAlgorithmException;
 import java.net.*;
@@ -11,11 +11,9 @@ public class SI {
     private static ServerSocket server;
     //socket server port on which it will listen
     private static int port = 2000;
-    
-    //ST port
-    static final int DEFAULT_PORT_ST=2001;
-    //ST IP
-    static final String DEFAULT_IP_ST="localhost";
+
+    private static String port_st = "2001";
+    private static String st_ip = "127.0.0.1";
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
         //creating socket and waiting for client connection
@@ -37,20 +35,14 @@ public class SI {
 
             /* pegar no nif e calcular um hash */
             String myHash = calculate_md5_hash(nif_cliente);
-
+            SI_Info info = new SI_Info(myHash, st_ip, port_st);
 
             /*  create ObjectOutputStream object
                 Enviar hash calculada para o cliente */
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             //write answer(hash) to Socket
-            oos.writeObject(myHash);
-            
-            //write ST_port to Socket
-            oos.writeObject(DEFAULT_PORT_ST);
-            
-            //write ST_IP to socket
-            oos.writeObject(DEFAULT_IP_ST);
-            
+            oos.writeObject(info);
+
             /*terminate the server
             ois.close();
             oos.close();

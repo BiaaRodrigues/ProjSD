@@ -1,8 +1,11 @@
 //criação do serviço
+
+package ProjSD.src.Data;
+
 import java.io.Serializable;
 
 public class Service implements Serializable{
-    
+
     private String key;
     private String desc;
     private String tTecno;
@@ -71,5 +74,5 @@ public class Service implements Serializable{
     public String toString() {
         return "WebService{" + "key=" + key + ", desc=" + desc + ", tTecno=" + tTecno + ", ip=" + ip + ", porto=" + porto + ", name=" + name + '}';
     }
-    
+
 }

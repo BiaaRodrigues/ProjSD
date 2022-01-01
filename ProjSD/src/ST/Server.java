@@ -1,3 +1,7 @@
+package ProjSD.src.ST;
+
+import Data.ListService;
+import Data.Service;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -10,11 +14,13 @@ public class Server implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String utilizador;
+    private ListService bd;
 
-    public Server(Socket s) throws IOException {
+    public Server(Socket s, ListService bd) throws IOException {
         this.utilizador = "";
         this.out = new ObjectOutputStream(s.getOutputStream());
         this.in = new ObjectInputStream(s.getInputStream());
+        this.bd = bd;
     }
 
 
@@ -31,6 +37,16 @@ public class Server implements Runnable {
                 switch (parts[0]) {
                     case "1":
                         logIn(parts[1], parts[2]);
+                        break;
+                    case "2":
+                        int porta = Integer.parseInt(parts[4]);
+                        if (parts[2].equalsIgnoreCase("rmi")){
+                            registerRMI(parts[5], parts[1], parts[2], parts[3], porta, parts[6]);
+                        } else if (parts[2].equalsIgnoreCase("socket")){
+                            registerSocket(parts[5], parts[1], parts[2], parts[3], porta);
+                        } else out.writeObject("RegistoInv");
+                        //System.out.println(service.toString());
+
                         break;
                     case "0":
                         break;
@@ -53,6 +69,28 @@ public class Server implements Runnable {
             out.writeObject("HASHERRADA");
         }
 
+    }
+
+    public void registerRMI(String key, String desc, String tTecno, String ip, int porto, String name) throws IOException {
+        Service service = new Service(key, desc, tTecno, ip, porto, name);
+
+        if(bd.addRMI(service) == 0){
+            out.writeObject("RMIExiste");
+        } else {
+            out.writeObject("RMIRegistado");
+        }
+        System.out.println(bd.getSvRMI());
+    }
+
+    public void registerSocket(String key, String desc, String tTecno, String ip, int porto) throws IOException {
+        Service service = new Service(key, desc, tTecno, ip, porto, "");
+
+        if(bd.addSocket(service) == 0){
+            out.writeObject("SocketExiste");
+        } else {
+            out.writeObject("SocketRegistado");
+        }
+        System.out.println(bd.getSvSockets());
     }
 
     /* Converter NIF numa hash MD5 */
