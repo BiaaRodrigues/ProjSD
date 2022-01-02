@@ -2,8 +2,8 @@ package ProjSD.src;
 import java.util.*;
 import java.net.*;
 import java.io.*;
-import Data.Service;
-import SI.SI_Info;
+//import Data.Service;
+import ProjSD.src.SI.SI_Info;
 
 /**
  * Classe Client que se liga ao SI e ao ST
@@ -184,11 +184,11 @@ public class Client {
         msg = (String) ois.readObject();
         // conforme o que o ST responde, damos a informçao ao cliente
         switch (msg) {
-            case "RMIExiste" -> System.out.println("Este RMI já existe!");
-            case "RMIRegistado" -> System.out.println("Serviço RMI Criado com Sucesso!");
-            case "SocketExiste" -> System.out.println("Este Socket já existe!");
-            case "SocketRegistado" -> System.out.println("Serviço Socket Criado com Sucesso!");
-            case "RegistoInv" -> System.out.println("Registo Invalido, no tipo de comun tem que ser 'rmi' ou 'socket'");
+            case "RMIExiste" : System.out.println("Este RMI já existe!");
+            case "RMIRegistado" : System.out.println("Serviço RMI Criado com Sucesso!");
+            case "SocketExiste" : System.out.println("Este Socket já existe!");
+            case "SocketRegistado" : System.out.println("Serviço Socket Criado com Sucesso!");
+            case "RegistoInv" : System.out.println("Registo Invalido, no tipo de comun tem que ser 'rmi' ou 'socket'");
         }
     }
 }
