@@ -12,6 +12,7 @@ public class SI {
     //socket server port on which it will listen
     private static int port = 2000;
 
+    // porta e ip do ST, que vamos enviar o client
     private static String port_st = "2001";
     private static String st_ip = "127.0.0.1";
 
@@ -35,6 +36,7 @@ public class SI {
 
             /* pegar no nif e calcular um hash */
             String myHash = calculate_md5_hash(nif_cliente);
+            /* Criar um objeto SI_Info que tem 3 Strings com informaçao: a hash, e o ip e porta do ST */
             SI_Info info = new SI_Info(myHash, st_ip, port_st);
 
             /*  create ObjectOutputStream object
@@ -51,8 +53,10 @@ public class SI {
         }
     }
 
-
-    /* Converter NIF numa hash MD5 */
+    /**
+     * Converter NIF numa hash MD5
+     * Recebe @nif_cliente e retorna a hash MD5
+     * */
     private static String calculate_md5_hash(String nif_cliente) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(nif_cliente.getBytes());

@@ -1,6 +1,11 @@
 
 import java.io.Serializable;
 
+/**
+ * Classe SI_Info que representa o objeto que o SI comunica aos Clients.
+ * O SI em vez de enviar uma string, envia um objeto SI_Info que tem a informaçao
+ * da hash calculada, e da porta e do ip do ST
+ */
 public class SI_Info implements Serializable {
 
     private String hash;

@@ -5,6 +5,9 @@ import java.io.*;
 import Data.Service;
 import SI.SI_Info;
 
+/**
+ * Classe Client que se liga ao SI e ao ST
+ */
 public class Client {
     static final int DEFAULT_PORT_SI=2000;
     static final int DEFAULT_PORT_ST=2001;
@@ -40,8 +43,9 @@ public class Client {
                     oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(nif);
 
-                    /* read the server response message
-                       Do SI vamos receber a hash que vai servir para nos autenticarmos no ST
+                    /* read the server response message:
+                       Do SI vamos receber um objeto SI_Info que contem a hash que vai servir para nos autenticarmos no ST
+                       e contem tambem um o ip e porta do ST
                      */
                     ois = new ObjectInputStream(socket.getInputStream());
                     SI_Info info_SI = (SI_Info) ois.readObject();
@@ -60,12 +64,14 @@ public class Client {
                     //establish socket connection to server
                     socket = new Socket(DEFAULT_HOST, DEFAULT_PORT_ST);
                     scanner.nextLine();
+                    // se nos ligarmos ao ST temos que pedir nif e hash ao cliente de modo a se autenticar:
                     String nif_login, hash_login, msg;
                     System.out.println("Introduza o nif");
                     nif_login = scanner.nextLine();
                     System.out.println("Introduza a hash");
                     hash_login = scanner.nextLine();
-
+                    
+                    // enviar uma string do tipo "1-NIF-HASH"
                     msg = "1-" + nif_login + "-" + hash_login;
                     System.out.println(msg);
                     //write to socket using ObjectOutputStream
@@ -76,6 +82,7 @@ public class Client {
                     ois = new ObjectInputStream(socket.getInputStream());
                     String response_st = (String) ois.readObject();
 
+                    // se o ST responder com "TudoCerto" entao está tudo ok e podemos mostrar o menu do ST -> showSTMenu()
                     switch (response_st) {
                         case "TudoCerto":
                             System.out.println("Tudo Certo, ganhou acesso!");
@@ -100,6 +107,9 @@ public class Client {
         }
     }
 
+    /**
+     * Menu do ST, podemos registar e ver/pedir os serviços (só a parte do registar é que ta feita)
+     */
     public static void showSTMenu() throws IOException, InterruptedException, ClassNotFoundException {
         boolean x = true;
 
@@ -130,6 +140,9 @@ public class Client {
         }
     }
 
+    /**
+     * Funçao que pede a informaçao ao cliente para depois ser usada no ST para registar um serviço novo
+     */
     public static void registerSv() throws IOException, ClassNotFoundException {
         scanner.nextLine();
         String nome, descricao, comunicacao, iP, chave, msg, porta;
@@ -145,6 +158,7 @@ public class Client {
         porta = scanner.nextLine();
 
         if (comunicacao.equals("rmi")){
+            // só os serviços rmi é que têm um nome, ver no enunciado
             System.out.println("Introduza o nome do RMI");
             nome = scanner.nextLine();
             chave = iP+porta+nome;
@@ -154,16 +168,21 @@ public class Client {
             msg = "2-" + descricao + "-" + comunicacao + "-" + iP + "-" + porta + "-" + chave;
         }
 
+        // enviamos uma string com a info toda para o ST, como a string começa por "2-", o ST sabe que é info para registar um serviço
+        // a maneira como a chave unica do serviço é calculada está explicada no enunciado -> ip+porta para os sockets ...
+
         System.out.println("Chave de Registo: " + chave);
 
 
         System.out.println(msg);
 
+        //enviar a string para o ST
         oos.writeObject(msg);
 
         //oos.newLine();
 
         msg = (String) ois.readObject();
+        // conforme o que o ST responde, damos a informçao ao cliente
         switch (msg) {
             case "RMIExiste" -> System.out.println("Este RMI já existe!");
             case "RMIRegistado" -> System.out.println("Serviço RMI Criado com Sucesso!");

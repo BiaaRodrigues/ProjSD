@@ -4,6 +4,9 @@ package ProjSD.src.Data;
 
 import java.io.Serializable;
 
+/**
+ * Classe Service com todas as informaçoes de que compoem um serviço
+ */
 public class Service implements Serializable{
 
     private String key;
