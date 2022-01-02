@@ -13,15 +13,15 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 public class ListService {
-    
+
     // a String é a chave (unica) do serviço
     private HashMap<String, Service> rmi_Services;
     private HashMap<String, Service> socket_Services;
 
     // locks servem para bloquear qualquer acesso ao hashmap. imagina que estao 2 clientes a meter coisas no hashmap, pode dar asneira
     // se tiverem os dois  a tentar a meter o mesmo serviço
-    // com locks o primeiro a chegar dá lock e depois de inserir dá unlock. 
-    // Verificar se podemos usar isto
+    // com locks o primeiro a chegar dá lock e depois de inserir dá unlock. ja nao me lembro bem desta parte, 
+    // é melhor estudares e confirmares que deste isto nas aulas (??)
     private ReentrantLock lock_RMI_Serv;
     private ReentrantLock lock_Sckt_Serv;
 
@@ -50,7 +50,7 @@ public class ListService {
         return 1; //tudo ok
     }
 
-     // igual ao de cima mas para o hashmap de sockets
+    // igual ao de cima mas para o hashmap de sockets
     public int addSocket(Service sckt_service){
         String chave2 = sckt_service.getkey();
 
@@ -66,7 +66,6 @@ public class ListService {
     }
 
     // passar os hashmap para string
-    //
     public String getSvRMI(){
         return rmi_Services.values().toString();
     }
