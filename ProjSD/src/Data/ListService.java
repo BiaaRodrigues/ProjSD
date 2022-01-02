@@ -20,8 +20,8 @@ public class ListService {
 
     // locks servem para bloquear qualquer acesso ao hashmap. imagina que estao 2 clientes a meter coisas no hashmap, pode dar asneira
     // se tiverem os dois  a tentar a meter o mesmo serviço
-    // com locks o primeiro a chegar dá lock e depois de inserir dá unlock. ja nao me lembro bem desta parte, 
-    // é melhor estudares e confirmares que deste isto nas aulas (??)
+    // com locks o primeiro a chegar dá lock e depois de inserir dá unlock. 
+    // ver se podemos usar isto
     private ReentrantLock lock_RMI_Serv;
     private ReentrantLock lock_Sckt_Serv;
 
