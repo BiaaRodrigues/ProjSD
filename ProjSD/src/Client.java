@@ -2,6 +2,8 @@ package ProjSD.src;
 import java.util.*;
 import java.net.*;
 import java.io.*;
+
+import ProjSD.src.Data.ListService;
 //import Data.Service;
 import ProjSD.src.SI.SI_Info;
 
@@ -129,8 +131,17 @@ public class Client {
                     System.out.println("1 - RMI");
                     System.out.println("2 - Sockets");
                     int y = scanner.nextInt();
-                    if(y == 1) System.out.println("Lista RMI");
-                    else System.out.println("Lista Sockets");
+                    if(y == 1) {
+                        //System.out.println("Lista RMI");
+                       String listRMI = getSvRMI();
+                       System.out.println(listRMI);
+
+                    }
+                    else {
+                        //System.out.println("Lista Sockets");
+                        String listSocket = getSvRMI();
+                        System.out.println(listSocket);
+                    }
                     //x = false;
                     break;
                 case 3:
