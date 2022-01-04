@@ -52,7 +52,7 @@ public class SI {
             socket.close();
             server.close();*/
         }
-    }
+    } 
 
     /**
      * Converter NIF numa hash MD5
