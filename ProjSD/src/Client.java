@@ -17,6 +17,7 @@ public class Client {
     private static Scanner scanner = new Scanner(System. in);
     private static ObjectOutputStream oos;
     private static ObjectInputStream ois;
+    //ListService x = new ListSevice();
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
@@ -118,8 +119,9 @@ public class Client {
         while (x) {
             System.out.println("O que deseja fazer?");
             System.out.println("1 - Registar Serviço");
-            System.out.println("2 - Ver Serviços");
-            System.out.println("3 - Voltar");
+            System.out.println("2 - Consultar Serviços");
+            System.out.println("3 - Ligaçao a um serviço");
+            System.out.println("4 - Voltar");
             int n = scanner.nextInt();
             switch (n) {
                 case 1:
@@ -127,24 +129,46 @@ public class Client {
                     //x = false;
                     break;
                 case 2:
-                    System.out.println("Que Serviços quer ver?");
+                    System.out.println("Que Serviços quer consultar?");
                     System.out.println("1 - RMI");
                     System.out.println("2 - Sockets");
                     int y = scanner.nextInt();
-                    if(y == 1) {
-                        //System.out.println("Lista RMI");
-                       String listRMI = getSvRMI();
-                       System.out.println(listRMI);
+                    
 
+                    if(y == 1) {
+                        //tenho de conectar ao ST e lá é que faço um metodo-> um for e um println dos valores
+                        // do cliente, como não sabemos o tamanho, fazemos in.readnextline, vamos ter fe zer um try 
+                        //e um catch 
+                        try{
+                            while(true){
+                                System.out.println(in.readnextLine())
+                            }
+                        }catch(Exception e){}
+                    
+
+                    
                     }
                     else {
-                        //System.out.println("Lista Sockets");
-                        String listSocket = getSvRMI();
-                        System.out.println(listSocket);
+                        
+
                     }
                     //x = false;
                     break;
                 case 3:
+                    System.out.println("A que serviço se quer ligar?");
+                    System.out.println("1 - RMI");
+                    System.out.println("2 - Sockets");
+                    int z = scanner.nextInt();
+
+                    if(z == 1) {
+                        //ligação ao serviço de temperatura
+                    }
+                    else {
+                      //ligação ao serviço de humidade
+                    }
+                    break;
+
+                case 4:
                     x = false;
                     break;
             }

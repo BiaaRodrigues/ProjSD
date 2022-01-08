@@ -110,6 +110,20 @@ public class Server implements Runnable {
         System.out.println(bd.getSvSockets());
     }
 
+    public void consultSocket(){
+        
+        for(int=0; i<ARRAY.length();i++){
+
+            out.println(getSvRMI());
+        }
+    }
+
+    public void consultRmi(){
+        for(int=0; i<ARRAY.length();i++){
+            
+            out.println(getSvSockets());
+        }
+    }
     /* Converter NIF numa hash MD5, mesma funçao que ha no SI */
     private static String calculate_md5_hash(String nif_cliente) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
