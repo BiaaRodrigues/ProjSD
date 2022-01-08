@@ -7,6 +7,6 @@ import java.time.Instant;
 
 public interface ServicesInterface extends Remote {
 
-	 public Float getTemp(Instant tsp) throws RemoteException;
+	public int getTemp(int tsp) throws RemoteException;
 
 }
