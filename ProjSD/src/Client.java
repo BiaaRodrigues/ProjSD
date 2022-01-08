@@ -6,6 +6,7 @@ import java.io.*;
 import ProjSD.src.Data.ListService;
 //import Data.Service;
 import ProjSD.src.SI.SI_Info;
+import ProjSD.src.ST.STemp.ServicesServer;
 
 /**
  * Classe Client que se liga ao SI e ao ST
@@ -162,9 +163,12 @@ public class Client {
 
                     if(z == 1) {
                         //ligação ao serviço de temperatura
+                    
                     }
                     else {
                       //ligação ao serviço de humidade
+
+
                     }
                     break;
 
