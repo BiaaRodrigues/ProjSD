@@ -1,11 +1,13 @@
 package ProjSD.src;
 import java.util.*;
 import java.net.*;
+import java.rmi.registry.LocateRegistry;
 import java.io.*;
 
 import ProjSD.src.Data.ListService;
 //import Data.Service;
 import ProjSD.src.SI.SI_Info;
+import ProjSD.src.ST.STemp.ServicesInterface;
 import ProjSD.src.ST.STemp.ServicesServer;
 
 /**
@@ -142,7 +144,7 @@ public class Client {
                         //e um catch 
                         try{
                             while(true){
-                                System.out.println(in.readnextLine())
+                                System.out.println(in.readnextLine());
                             }
                         }catch(Exception e){}
                     
@@ -163,11 +165,9 @@ public class Client {
 
                     if(z == 1) {
                         //ligação ao serviço de temperatura
-<<<<<<< HEAD
-
-=======
-                    
->>>>>>> 21072503c335c69cbae6b42855d23c93ba61eb60
+                        ServicesInterface mensagem= (ServicesInterface) LocateRegistry.getRegistry("127.0.0.1").lookup("/TemperatureService");
+                        int response = mensagem.getTemp(10);
+                        System.out.println(response);
                     }
                     else {
                       //ligação ao serviço de humidade
