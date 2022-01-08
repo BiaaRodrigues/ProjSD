@@ -162,6 +162,7 @@ public class Client {
 
                     if(z == 1) {
                         //ligação ao serviço de temperatura
+
                     }
                     else {
                       //ligação ao serviço de humidade
