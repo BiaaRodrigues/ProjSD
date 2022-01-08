@@ -165,9 +165,9 @@ public class Client {
 
                     if(z == 1) {
                         //ligação ao serviço de temperatura
-                    ServicesInterface mensagem= (ServicesInterface) LocateRegistry.getRegistry("127.0.0.1").lookup("/TemperatureService");
-                    int response = mensagem.getTemp(10);
-                    System.out.println(response);
+                        ServicesInterface mensagem= (ServicesInterface) LocateRegistry.getRegistry("127.0.0.1").lookup("/TemperatureService");
+                        int response = mensagem.getTemp(10);
+                        System.out.println(response);
                     }
                     else {
                       //ligação ao serviço de humidade
