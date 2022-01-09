@@ -120,8 +120,9 @@ public class Client {
                         // nao esquecer meter o serviço a correr -> STemp/ServerApp.java
                         Instant timestamp_now = Instant.now();
                         Float response_temp = mensagem.getTemp(timestamp_now);
-                        System.out.println(response_temp);
+                        System.out.println("Valor da temperatura: " +response_temp);
                     }
+
                     if(z == 2){
                         // aqui deviamos imprimir todos os serviços de sockets dos quais temos um ticket, mas para ja está a ir direto para o serviço da humidade
                         // nao esquecer meter o serviço a correr -> SHum/ServiceHumidityServer.java
