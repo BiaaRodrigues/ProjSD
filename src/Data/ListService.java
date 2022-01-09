@@ -65,11 +65,33 @@ public class ListService {
         return 1; //tudo ok
     }
 
-    // passar os hashmap para string
+    // passar os hashmap para tabela em string
     public String getSvRMI(){
-        return rmi_Services.values().toString();
+        String table = "";
+        table = table + "+--------------------+---------------+-----+-----------------------+-------------+\n";
+        table = table + "|        Key         |       IP      |Porta|       Descricao       |     Nome    +\n";
+        table = table + "+--------------------+---------------+-----+-----------------------+-------------+\n";
+        for (String key : rmi_Services.keySet()) {
+            if(rmi_Services.get(key).gettTecno().equals("rmi")){
+                table = table + rmi_Services.get(key).getkey()+" | "+rmi_Services.get(key).getIp()+" | "+rmi_Services.get(key).getPorto()+" | "+rmi_Services.get(key).getDesc()+" | "+rmi_Services.get(key).getname()+"\n";
+            }
+        }
+        table = table + "+--------------------+---------------+-----+-----------------------+\n";
+
+        return table;
     }
     public String getSvSockets(){
-        return socket_Services.values().toString();
+        String table = "";
+        table = table + "+------------------+---------------+-----+-----------------------+\n";
+        table = table + "|       Key        |       IP      |Porta|       Descricao       |\n";
+        table = table + "+------------------+---------------+-----+-----------------------+\n";
+        for (String key : socket_Services.keySet()) {
+            if(socket_Services.get(key).gettTecno().equals("socket")){
+                table = table + socket_Services.get(key).getkey()+" | "+socket_Services.get(key).getIp()+" | "+socket_Services.get(key).getPorto()+" | "+socket_Services.get(key).getDesc()+"\n";
+            }
+        }
+        table = table + "+------------------+---------------+-----+-----------------------+\n";
+
+        return table;
     }
 }

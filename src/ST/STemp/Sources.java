@@ -18,7 +18,8 @@ public class Sources extends UnicastRemoteObject implements ServicesInterface {
 
 	private static Hashtable<String, DataStructure> presentData = new Hashtable<String, DataStructure>();
 	private static int  cont, orderActual=1;
-	private static String filename= "log_temp.csv";
+	private static String filename= "./ProjSD/src/ST/STemp/log_temp.csv";
+
 	
 	public Sources() throws RemoteException {
 		super();

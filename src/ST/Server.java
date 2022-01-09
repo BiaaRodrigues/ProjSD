@@ -17,11 +17,9 @@ public class Server implements Runnable {
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private String utilizador;
     private ListService bd;
 
     public Server(Socket s, ListService bd) throws IOException {
-        this.utilizador = "";
         this.out = new ObjectOutputStream(s.getOutputStream());
         this.in = new ObjectInputStream(s.getInputStream());
         this.bd = bd;
@@ -55,7 +53,10 @@ public class Server implements Runnable {
                         //System.out.println(service.toString());
 
                         break;
-                    // case 3: e hão de ser necessarios mais casos para outras funcionalidades
+                    case "3":
+                        if (parts[1].equals("getSocketList")) consultSocket();
+                        else if (parts[1].equals("getRMIList")) consultRmi();
+                    // case 4: se for necessarios mais casos para outras funcionalidades
                     case "0":
                         break;
                 }
@@ -75,7 +76,6 @@ public class Server implements Runnable {
         if (myHash.equals(hash)){
             // se for entao manda a msg "TudoCerto" para o client
             out.writeObject("TudoCerto");
-            this.utilizador = nif;
         }
         else {
             out.writeObject("HASHERRADA");
@@ -110,20 +110,17 @@ public class Server implements Runnable {
         System.out.println(bd.getSvSockets());
     }
 
-    public void consultSocket(){
-        
-        for(int=0; i<ARRAY.length();i++){
-
-            out.println(getSvRMI());
-        }
+    public void consultSocket() throws IOException{
+        String table = bd.getSvSockets();
+        out.writeObject(table);
     }
 
-    public void consultRmi(){
-        for(int=0; i<ARRAY.length();i++){
-            
-            out.println(getSvSockets());
-        }
+    public void consultRmi() throws IOException{
+        String table = bd.getSvRMI();
+        out.writeObject(table);
     }
+
+
     /* Converter NIF numa hash MD5, mesma funçao que ha no SI */
     private static String calculate_md5_hash(String nif_cliente) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");

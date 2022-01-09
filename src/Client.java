@@ -1,20 +1,20 @@
 package ProjSD.src;
 import java.util.*;
 import java.net.*;
+import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.io.*;
 
-import ProjSD.src.Data.ListService;
 //import Data.Service;
 import ProjSD.src.SI.SI_Info;
 import ProjSD.src.ST.STemp.ServicesInterface;
-import ProjSD.src.ST.STemp.ServicesServer;
+import java.time.Instant;
 
 /**
  * Classe Client que se liga ao SI e ao ST
  */
 public class Client {
-    static final int DEFAULT_PORT_SI=2000;
+    static final int DEFAULT_PORT_SI=2002;
     static final int DEFAULT_PORT_ST=2001;
     static final String DEFAULT_HOST="127.0.0.1";
     private static Scanner scanner = new Scanner(System. in);
@@ -22,7 +22,7 @@ public class Client {
     private static ObjectInputStream ois;
     //ListService x = new ListSevice();
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException, NotBoundException {
 
         Socket socket = null;
         boolean running = true;
@@ -33,7 +33,8 @@ public class Client {
             System.out.println("A que serviço te queres conectar?");
             System.out.println("1 - Serviço de Identificação");
             System.out.println("2 - Serviço de Ticketing");
-            System.out.println("3 - Sair");
+            System.out.println("3 - Aceder a Serviços que temos Ticket");
+            System.out.println("4 - Sair");
             option = scanner.nextInt();
 
             switch (option){
@@ -79,7 +80,7 @@ public class Client {
                     
                     // enviar uma string do tipo "1-NIF-HASH"
                     msg = "1-" + nif_login + "-" + hash_login;
-                    System.out.println(msg);
+                    //System.out.println(msg);
                     //write to socket using ObjectOutputStream
                     oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(msg);
@@ -105,6 +106,52 @@ public class Client {
                     break;
 
                 case 3:
+                    scanner.nextLine();
+                    System.out.println("A que serviço se quer ligar?");
+                    System.out.println("1 - RMI");
+                    System.out.println("2 - Sockets");
+                    int z = scanner.nextInt();
+
+                    if(z == 1) {
+                        // aqui deviamos imprimir todos os serviços de RMI dos quais temos um ticket, mas para ja está a ir direto para o serviço da temp
+                        /*ligação ao serviço de temperatura*/
+                        ServicesInterface mensagem= (ServicesInterface) LocateRegistry.getRegistry("127.0.0.1").lookup("/TemperatureService");
+                        // É só mandar o timestamp e invocar o getTemp
+                        // nao esquecer meter o serviço a correr -> STemp/ServerApp.java
+                        Instant timestamp_now = Instant.now();
+                        Float response_temp = mensagem.getTemp(timestamp_now);
+                        System.out.println(response_temp);
+                    }
+                    if(z == 2){
+                        // aqui deviamos imprimir todos os serviços de sockets dos quais temos um ticket, mas para ja está a ir direto para o serviço da humidade
+                        // nao esquecer meter o serviço a correr -> SHum/ServiceHumidityServer.java
+                        BufferedReader in;
+                        PrintWriter out;
+                        // a porta do serviço de humidade é a 2000, foi o prof que definiu no codigo do SHum
+                        socket = new Socket(DEFAULT_HOST, 2000);
+                        in = new BufferedReader (new InputStreamReader(socket.getInputStream()));
+                        out = new PrintWriter(socket.getOutputStream());
+
+                        // o serviço de humidade funciona enviando uma string com "getHumidity + @timestamp", TEM QUE TER UM ESPAÇO ENTRE O GETHUMIDITY E O TIMESTAMP
+                        // sacar o timestamp atual:
+                        Instant now_instant = Instant.now();
+                        // fazer a string e enviar pelo socket
+                        String humidity_msg = "getHumidity "+now_instant;
+                        System.out.println(humidity_msg);
+                        out.println(humidity_msg);
+                        out.flush(); //lol merdas que nao eram preciso com o ObjectOutputStream 🥱🤷‍♂️ mas temos q usar BufferedReader/PrintWriter pq sao os usados no Serviço de Hum
+
+                        // ler a resposta e imprimir
+                        String response_humidity_status = (String) in.readLine(); //aqui recebes o "200 OK" que quer dizer que foi um pedido efetuado com sucesso
+                        String response_humidity_value = (String) in.readLine(); //aqui recebes o valor da humidade
+                        System.out.println("Valor da humidade: "+response_humidity_value);
+
+                        in.close();
+                        out.close();
+                        socket.close();
+                    }
+                    break;
+                case 4:
                     System.out.println("A sair ...");
                     /* Só temos que colocar a variavel running a false para sair do ciclo while() */
                     running = false;
@@ -115,16 +162,16 @@ public class Client {
 
     /**
      * Menu do ST, podemos registar e ver/pedir os serviços (só a parte do registar é que ta feita)
+     * @throws NotBoundException
      */
-    public static void showSTMenu() throws IOException, InterruptedException, ClassNotFoundException {
+    public static void showSTMenu() throws IOException, InterruptedException, ClassNotFoundException, NotBoundException {
         boolean x = true;
 
         while (x) {
             System.out.println("O que deseja fazer?");
             System.out.println("1 - Registar Serviço");
             System.out.println("2 - Consultar Serviços");
-            System.out.println("3 - Ligaçao a um serviço");
-            System.out.println("4 - Voltar");
+            System.out.println("3 - Voltar");
             int n = scanner.nextInt();
             switch (n) {
                 case 1:
@@ -139,44 +186,26 @@ public class Client {
                     
 
                     if(y == 1) {
+                        oos.writeObject("3-getRMIList");
+                        String response_st = (String) ois.readObject();
+                        System.out.println(response_st);
                         //tenho de conectar ao ST e lá é que faço um metodo-> um for e um println dos valores
                         // do cliente, como não sabemos o tamanho, fazemos in.readnextline, vamos ter fe zer um try 
-                        //e um catch 
+                        //e um catch
+                        /*
                         try{
                             while(true){
                                 System.out.println(in.readnextLine());
                             }
-                        }catch(Exception e){}
-                    
-
-                    
+                        }catch(Exception e){}*/
                     }
-                    else {
-                        
-
+                    else if (y == 2){
+                        oos.writeObject("3-getSocketList");
+                        String response_st = (String) ois.readObject();
+                        System.out.println(response_st);
                     }
-                    //x = false;
                     break;
                 case 3:
-                    System.out.println("A que serviço se quer ligar?");
-                    System.out.println("1 - RMI");
-                    System.out.println("2 - Sockets");
-                    int z = scanner.nextInt();
-
-                    if(z == 1) {
-                        //ligação ao serviço de temperatura
-                        ServicesInterface mensagem= (ServicesInterface) LocateRegistry.getRegistry("127.0.0.1").lookup("/TemperatureService");
-                        int response = mensagem.getTemp(10);
-                        System.out.println(response);
-                    }
-                    else {
-                      //ligação ao serviço de humidade
-
-
-                    }
-                    break;
-
-                case 4:
                     x = false;
                     break;
             }
@@ -204,10 +233,10 @@ public class Client {
             // só os serviços rmi é que têm um nome, ver no enunciado
             System.out.println("Introduza o nome do RMI");
             nome = scanner.nextLine();
-            chave = iP+porta+nome;
+            chave = iP+":"+porta+"/"+nome;
             msg = "2-" + descricao + "-" + comunicacao + "-" + iP + "-" + porta + "-" + chave + "-" + nome;
         } else {
-            chave = iP+porta;
+            chave = iP+":"+porta;
             msg = "2-" + descricao + "-" + comunicacao + "-" + iP + "-" + porta + "-" + chave;
         }
 

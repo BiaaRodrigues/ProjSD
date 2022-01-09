@@ -1,38 +1,36 @@
 package ProjSD.src.SI;
-
-import java.security.NoSuchAlgorithmException;
-import java.net.*;
-import java.io.*;
+/**
+ * FICHEIRO AINDA A NAO SER USADO
+ */
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
+import java.net.Socket;
+import java.io.*;
 
-
-public class SI {
-    //static ServerSocket variable
-    private static ServerSocket server;
-    //socket server port on which it will listen
-    private static int port = 2000;
-
+public class SI_Hander implements Runnable {
+    
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     // porta e ip do ST, que vamos enviar o client
     private static String port_st = "2001";
     private static String st_ip = "127.0.0.1";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, NoSuchAlgorithmException {
-        //creating socket and waiting for client connection
-        server = new ServerSocket(port);
 
-        //keep listens indefinitely until receives 'exit' call or program terminates
-        while (true) {
-            Socket socket = server.accept();
+    public SI_Hander(Socket socket) throws IOException{
+        
+        this.out = new ObjectOutputStream(socket.getOutputStream());
+        this.in = new ObjectInputStream(socket.getInputStream());
+    }
 
-            //read from socket to ObjectInputStream object
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-
+    @Override
+    public void run() {
+        try {
             /*  convert ObjectInputStream object to Integer,
                 vamos receber o que vem do Cliente, que neste caso é o NIF
                 agora podemos pegar neste nif e calcular uma hash com ele
-             */
-            String nif_cliente = (String) ois.readObject();
+            */
+            String nif_cliente = (String) in.readObject();
             System.out.println(nif_cliente);
 
             /* pegar no nif e calcular um hash */
@@ -42,18 +40,18 @@ public class SI {
 
             /*  create ObjectOutputStream object
                 Enviar hash calculada para o cliente */
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             //write answer(hash) to Socket
-            oos.writeObject(info);
+            out.writeObject(info);
 
-            /*terminate the server
-            ois.close();
-            oos.close();
-            socket.close();
-            server.close();*/
-        }
-    } 
+            /*terminate the server*/
+            in.close();
+            out.close();
+        } catch (IOException | NoSuchAlgorithmException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } 
+    }
 
+    
     /**
      * Converter NIF numa hash MD5
      * Recebe @nif_cliente e retorna a hash MD5
