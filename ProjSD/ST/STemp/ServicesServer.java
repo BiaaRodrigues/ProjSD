@@ -10,7 +10,7 @@ public class ServicesServer {
 
 	private void bindRMI(Sources sources) throws RemoteException {
 
-		System.getProperties().put( "java.security.policy", "./ProjSD/src/ST/STemp/server.policy");
+		System.getProperties().put( "java.security.policy", "./ProjSD/ST/STemp/server.policy");
 
 		if( System.getSecurityManager() == null) {
 			System.setSecurityManager(new SecurityManager());
