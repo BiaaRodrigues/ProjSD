@@ -1,7 +1,5 @@
 package ProjSD.src.SI;
-/**
- * FICHEIRO AINDA A NAO SER USADO
- */
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
