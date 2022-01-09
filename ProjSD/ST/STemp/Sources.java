@@ -8,7 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files; 
 import java.nio.file.Path;
 import java.nio.file.Paths; 
-import java.util.ArrayList; import java.util.List;
+import java.util.ArrayList; 
+import java.util.List;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.Instant;
@@ -18,7 +19,7 @@ public class Sources extends UnicastRemoteObject implements ServicesInterface {
 
 	private static Hashtable<String, DataStructure> presentData = new Hashtable<String, DataStructure>();
 	private static int  cont, orderActual=1;
-	private static String filename= "./ProjSD/src/ST/STemp/log_temp.csv";
+	private static String filename= "./ProjSD/ST/STemp/log_temp.csv";
 
 	
 	public Sources() throws RemoteException {

@@ -18,7 +18,7 @@ public class Sources {
 
 	private static Hashtable<String, DataStructure> presentData = new Hashtable<String, DataStructure>();
 	private static int  cont, orderActual=0;	
-	private static String filename= "./ProjSD/src/ST/SHum/log_temp.csv";
+	private static String filename= "./ProjSD/ST/SHum/log_temp.csv";
 	
 	public void loadData(){
 			List<String> dtset = new ArrayList<>();
