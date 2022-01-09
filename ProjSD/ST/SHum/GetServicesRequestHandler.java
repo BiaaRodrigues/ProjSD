@@ -1,4 +1,4 @@
-package ProjSD.src.ST.SHum;
+package ProjSD.ST.SHum;
 
 import java.net.*;
 import java.io.*;

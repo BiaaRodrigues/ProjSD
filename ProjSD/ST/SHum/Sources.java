@@ -1,4 +1,4 @@
-package ProjSD.src.ST.SHum;
+package ProjSD.ST.SHum;
 
 import java.util.*;
 import java.io.BufferedReader;

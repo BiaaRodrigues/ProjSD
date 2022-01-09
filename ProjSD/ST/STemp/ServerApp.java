@@ -1,4 +1,4 @@
-package ProjSD.src.ST.STemp;
+package ProjSD.ST.STemp;
 
 public class ServerApp {
 	

@@ -1,6 +1,6 @@
 //criação da lista de serviços registados
 
-package ProjSD.src.Data;
+package ProjSD.Data;
 
 //import Data.Service;
 

@@ -1,4 +1,4 @@
-package ProjSD.src;
+package ProjSD;
 import java.util.*;
 import java.net.*;
 import java.rmi.NotBoundException;
@@ -6,8 +6,8 @@ import java.rmi.registry.LocateRegistry;
 import java.io.*;
 
 //import Data.Service;
-import ProjSD.src.SI.SI_Info;
-import ProjSD.src.ST.STemp.ServicesInterface;
+import ProjSD.SI.SI_Info;
+import ProjSD.ST.STemp.ServicesInterface;
 import java.time.Instant;
 
 /**

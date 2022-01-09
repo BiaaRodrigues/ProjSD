@@ -1,6 +1,6 @@
-package ProjSD.src.ST;
+package ProjSD.ST;
 
-import ProjSD.src.Data.ListService;
+import ProjSD.Data.ListService;
 
 import java.io.IOException;
 import java.net.ServerSocket;

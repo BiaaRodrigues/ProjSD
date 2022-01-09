@@ -1,7 +1,7 @@
-package ProjSD.src.ST;
+package ProjSD.ST;
 
-import ProjSD.src.Data.ListService;
-import ProjSD.src.Data.Service;
+import ProjSD.Data.ListService;
+import ProjSD.Data.Service;
 
 import java.io.*;
 import java.math.BigInteger;

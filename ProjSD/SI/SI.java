@@ -1,4 +1,4 @@
-package ProjSD.src.SI;
+package ProjSD.SI;
 
 import java.net.*;
 import java.io.*;

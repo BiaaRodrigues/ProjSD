@@ -1,6 +1,6 @@
 //criação do serviço
 
-package ProjSD.src.Data;
+package ProjSD.Data;
 
 import java.io.Serializable;
 

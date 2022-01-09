@@ -1,4 +1,4 @@
-package ProjSD.src.ST.STemp;
+package ProjSD.ST.STemp;
 
 import java.lang.SecurityManager;
 import java.rmi.RemoteException;
