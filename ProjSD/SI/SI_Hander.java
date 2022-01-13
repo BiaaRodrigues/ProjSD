@@ -15,10 +15,16 @@ public class SI_Hander implements Runnable {
     private static String st_ip = "127.0.0.1";
 
 
-    public SI_Hander(Socket socket) throws IOException{
+    public SI_Hander(Socket socket){
         
-        this.out = new ObjectOutputStream(socket.getOutputStream());
-        this.in = new ObjectInputStream(socket.getInputStream());
+        try {
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.in = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            // e.printStackTrace();
+            System.out.println("Erro a criar variaveis");
+        }
     }
 
     @Override
@@ -44,7 +50,7 @@ public class SI_Hander implements Runnable {
             /*terminate the server*/
             in.close();
             out.close();
-        } catch (IOException | NoSuchAlgorithmException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } 
     }
@@ -54,18 +60,27 @@ public class SI_Hander implements Runnable {
      * Converter NIF numa hash MD5
      * Recebe @nif_cliente e retorna a hash MD5
      * */
-    private static String calculate_md5_hash(String nif_cliente) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(nif_cliente.getBytes());
-        byte[] digest = md.digest();
+    private static String calculate_md5_hash(String nif_cliente) {
+        MessageDigest md;
+        String myHash = "";
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(nif_cliente.getBytes());
+            byte[] digest = md.digest();
 
-        // Convert byte array into signum representation - https://www.geeksforgeeks.org/md5-hash-in-java/
-        BigInteger no = new BigInteger(1, digest);
+            // Convert byte array into signum representation - https://www.geeksforgeeks.org/md5-hash-in-java/
+            BigInteger no = new BigInteger(1, digest);
 
-        String myHash = no.toString(16);
-        while (myHash.length() < 32) {
-            myHash = "0" + myHash;
+            myHash = no.toString(16);
+            while (myHash.length() < 32) {
+                myHash = "0" + myHash;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+            System.out.println("Este Algoritmo de encriptaçao não existe");
         }
+        
 
         return myHash;
     }

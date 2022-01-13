@@ -13,15 +13,21 @@ import java.security.NoSuchAlgorithmException;
  * Thread que corre quando um cliente se liga ao ST
  * é aqui que sao lidas as mensagens dos clients e que sao chamadas as funçoes para atualizar a base de dados do ST
  */
-public class Server implements Runnable {
+public class ST_Handler implements Runnable {
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private ListService bd;
 
-    public Server(Socket s, ListService bd) throws IOException {
-        this.out = new ObjectOutputStream(s.getOutputStream());
-        this.in = new ObjectInputStream(s.getInputStream());
+    public ST_Handler(Socket s, ListService bd) {
+        try {
+            this.out = new ObjectOutputStream(s.getOutputStream());
+            this.in = new ObjectInputStream(s.getInputStream());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            // e.printStackTrace();
+            System.out.println("Erro a criar variaveis");
+        }
         this.bd = bd;
     }
 
@@ -62,23 +68,33 @@ public class Server implements Runnable {
                 }
             }
         }
-        catch (IOException | NoSuchAlgorithmException | ClassNotFoundException ignored) { }
+        catch (IOException | ClassNotFoundException ignored) { }
     }
 
     /*
      * Para o CLient ter acesso o @nif e a @hash têm que ser compativeis/iguais
      */
-    public void logIn(String nif, String hash) throws IOException, NoSuchAlgorithmException {
+    public void logIn(String nif, String hash) {
         /* pegar no nif e calcular um hash */
         String myHash = calculate_md5_hash(nif);
 
         // ver se a hash calculada em cima é igual à hash dada pelo client
         if (myHash.equals(hash)){
             // se for entao manda a msg "TudoCerto" para o client
-            out.writeObject("TudoCerto");
+            try {
+                out.writeObject("TudoCerto");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         else {
-            out.writeObject("HASHERRADA");
+            try {
+                out.writeObject("HASHERRADA");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
     }
@@ -86,54 +102,93 @@ public class Server implements Runnable {
      /* 
         Registar um serviço RMI, é só criar um objeto Service com as informaçoes todas e chamar a funçao que adiciona o RMI
     */
-    public void registerRMI(String key, String desc, String tTecno, String ip, int porto, String name) throws IOException {
+    public void registerRMI(String key, String desc, String tTecno, String ip, int porto, String name) {
         Service service = new Service(key, desc, tTecno, ip, porto, name);
 
         if(bd.addRMI(service) == 0){
             // se a funçao retornar 0 é porque o serviço RMI já existia e comunicamos isso ao client (ir ver a funçao addRMI no ListServices)
-            out.writeObject("RMIExiste");
+            try {
+                out.writeObject("RMIExiste");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
-            out.writeObject("RMIRegistado");
+            try {
+                out.writeObject("RMIRegistado");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         System.out.println(bd.getSvRMI());
     }
 
     // igual à de cima mas para socket
-    public void registerSocket(String key, String desc, String tTecno, String ip, int porto) throws IOException {
+    public void registerSocket(String key, String desc, String tTecno, String ip, int porto) {
         Service service = new Service(key, desc, tTecno, ip, porto, "");
 
         if(bd.addSocket(service) == 0){
-            out.writeObject("SocketExiste");
+            try {
+                out.writeObject("SocketExiste");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
-            out.writeObject("SocketRegistado");
+            try {
+                out.writeObject("SocketRegistado");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         System.out.println(bd.getSvSockets());
     }
 
-    public void consultSocket() throws IOException{
+    public void consultSocket(){
         String table = bd.getSvSockets();
-        out.writeObject(table);
+        try {
+            out.writeObject(table);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    public void consultRmi() throws IOException{
+    public void consultRmi(){
         String table = bd.getSvRMI();
-        out.writeObject(table);
+        try {
+            out.writeObject(table);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
     /* Converter NIF numa hash MD5, mesma funçao que ha no SI */
-    private static String calculate_md5_hash(String nif_cliente) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(nif_cliente.getBytes());
-        byte[] digest = md.digest();
+    private static String calculate_md5_hash(String nif_cliente) {
+        MessageDigest md;
+        String myHash = "";
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md.update(nif_cliente.getBytes());
+            byte[] digest = md.digest();
 
-        // Convert byte array into signum representation - https://www.geeksforgeeks.org/md5-hash-in-java/
-        BigInteger no = new BigInteger(1, digest);
+            // Convert byte array into signum representation - https://www.geeksforgeeks.org/md5-hash-in-java/
+            BigInteger no = new BigInteger(1, digest);
 
-        String myHash = no.toString(16);
-        while (myHash.length() < 32) {
-            myHash = "0" + myHash;
+            myHash = no.toString(16);
+            while (myHash.length() < 32) {
+                myHash = "0" + myHash;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+            System.out.println("Este Algoritmo de encriptaçao não existe");
         }
+        
         return myHash;
     }
 }

@@ -8,22 +8,29 @@ public class SI {
     //static ServerSocket variable
     private static ServerSocket server;
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException{
+    public static void main(String[] args){
         //socket server port on which it will listen
         int port = 2002;
 
         //creating socket and waiting for client connection
-        ServerSocket server = new ServerSocket(port);
+        ServerSocket server;
+        
 
         Socket socket;
         //keep listens indefinitely until receives 'exit' call or program terminates
         while (true) {
-
-            socket = server.accept();
-            SI_Hander sv = new SI_Hander(socket);
-
-            Thread t1 = new Thread(sv);
-            t1.start();
+            try {
+                server = new ServerSocket(port);
+                socket = server.accept();
+                SI_Hander sv = new SI_Hander(socket);
+    
+                Thread t1 = new Thread(sv);
+                t1.start();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("O SI não conseguiu establecer ligaçao");
+            }
             
         }
     } 
