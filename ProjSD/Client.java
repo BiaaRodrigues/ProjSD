@@ -103,7 +103,7 @@ public class Client {
 
                     if(z == 1) {
                         scanner.nextLine();
-                        System.out.println("Qual o IP do serviço RMI que se quer conectar (Serviço temp está no 127.0.0.1):");
+                        System.out.println("Chave de acesso :");
                         String answer_rmi = scanner.nextLine();
 
                         try {
@@ -127,9 +127,11 @@ public class Client {
                         BufferedReader in;
                         PrintWriter out;
                         scanner.nextLine();
-                        System.out.println("Qual o IP do serviço Socket que se quer conectar (Serviço Hum está no 127.0.0.1):");
+                        //(Serviço Hum está no 127.0.0.1)
+                        System.out.println("Qual o IP do serviço Socket que se quer conectar :");
                         String answer_socket = scanner.nextLine();
-                        System.out.println("Qual a porta do serviço? (Serviço Hum está na porta 2000):");
+                        //(Serviço Hum está na porta 2000)
+                        System.out.println("Qual a porta do serviço? :");
                         int answer_porta = scanner.nextInt();
 
 
@@ -295,7 +297,7 @@ public class Client {
             // só os serviços rmi é que têm um nome, ver no enunciado
             System.out.println("Introduza o nome do RMI");
             nome = scanner.nextLine();
-            chave = iP+":"+porta+"/"+nome;
+            chave = iP+":"+porta+":"+nome;
             msg = "2-" + descricao + "-" + comunicacao + "-" + iP + "-" + porta + "-" + chave + "-" + nome;
         } else {
             chave = iP+":"+porta;
