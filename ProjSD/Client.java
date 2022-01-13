@@ -31,13 +31,20 @@ public class Client {
 
         while(running){
             int option = 0;
+            
 
             System.out.println("A que serviço te queres conectar?");
             System.out.println("1 - Serviço de Identificação");
             System.out.println("2 - Serviço de Ticketing");
             System.out.println("3 - Aceder a Serviços que temos Ticket");
             System.out.println("4 - Sair");
-            option = scanner.nextInt();
+
+            try {
+                option = scanner.nextInt();
+            }
+            catch (InputMismatchException e) {
+                running = false;
+            }
 
             switch (option){
                 case 1:
@@ -103,13 +110,22 @@ public class Client {
 
                     if(z == 1) {
                         scanner.nextLine();
-                        System.out.println("Chave de acesso :");
+                        // O serviço de temperatura deve ser registado com o ip 127.0.0.1 porta 1099 e nome TemperatureService
+                        // ou seja a chave dele vai ser 127.0.0.1:1099:TemperatureService
+                        System.out.println("Chave de acesso do Serviço RMI?:");
                         String answer_rmi = scanner.nextLine();
+
+                        // separa o answer_rmi pelos ":", numa lista de strings, primeira posiçao tem o ip, segunda a porta e terceira o nome 
+                        String[] answer_parts = answer_rmi.split(":");
+                        String rmi_ip = answer_parts[0];
+                        String rmi_porta = answer_parts[1];
+                        String rmi_nome = "/"+answer_parts[2];
+                        
 
                         try {
                             /*ligação ao serviço de temperatura*/
                             ServicesInterface mensagem;
-                            mensagem = (ServicesInterface) LocateRegistry.getRegistry(answer_rmi).lookup("/TemperatureService");
+                            mensagem = (ServicesInterface) LocateRegistry.getRegistry(rmi_ip).lookup(rmi_nome);
                             // É só mandar o timestamp e invocar o getTemp, nao esquecer meter o serviço a correr -> STemp/ServerApp.java
                             Instant timestamp_now = Instant.now();
                             Float response_temp = mensagem.getTemp(timestamp_now);
@@ -128,15 +144,17 @@ public class Client {
                         PrintWriter out;
                         scanner.nextLine();
                         //(Serviço Hum está no 127.0.0.1)
-                        System.out.println("Qual o IP do serviço Socket que se quer conectar :");
+                        System.out.println("Chave de acesso do Serviço Socket?:");
                         String answer_socket = scanner.nextLine();
-                        //(Serviço Hum está na porta 2000)
-                        System.out.println("Qual a porta do serviço? :");
-                        int answer_porta = scanner.nextInt();
 
+                        // separa o answer rmi pelos ":", numa lista de strings, primeira posiçao tem o ip, segunda a porta e terceira o nome 
+                        String[] answer_parts = answer_socket.split(":");
+                        String socket_ip = answer_parts[0];
+                        // passar a porta para int
+                        int socket_porta = Integer.parseInt(answer_parts[1]);
 
                         try {
-                            socket = new Socket(answer_socket, answer_porta);
+                            socket = new Socket(socket_ip, socket_porta);
                             in = new BufferedReader (new InputStreamReader(socket.getInputStream()));
                             out = new PrintWriter(socket.getOutputStream());
                             
@@ -161,7 +179,7 @@ public class Client {
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             //e.printStackTrace();
-                            System.out.println("O serviço Socket no IP" + answer_socket + ":" + answer_porta + " Não está a funcionar");
+                            System.out.println("O serviço Socket no IP " + socket_ip + " e porta " + socket_porta + " não está a funcionar");
                         }
                         
                     }
@@ -171,6 +189,10 @@ public class Client {
                     /* Só temos que colocar a variavel running a false para sair do ciclo while() */
                     running = false;
                     break;
+                default:
+                    System.out.println("Não introduziu uma opção válida");
+                    break;
+
             }
         }
     }
