@@ -15,16 +15,24 @@ public class ST {
     public static void main(String[] args){
         //socket server port on which it will listen
         int port = 2001;
-        ServerSocket ss;
+        ServerSocket ss = null;
         
         Socket socket;
         // o ST tem um base de dados composta  por dois hashmaps (ver fich ListServices)
         ListService bd = new ListService();
 
+        
+		try	{ 
+			ss = new ServerSocket(port);
+		} catch (Exception e) { 
+			System.err.println("erro ao criar socket servidor...");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
         //keep listens indefinitely until receives 'exit' call or program terminates
         while (true) {
             try {
-                ss = new ServerSocket(port);
                 socket = ss.accept();
                 // quando um client se conecta é criada um thread Server que recebe as msgs do Client e depois envia os dados à base de dados
                 ST_Handler sv = new ST_Handler(socket, bd);
@@ -32,10 +40,9 @@ public class ST {
                 Thread t1 = new Thread(sv);
                 t1.start();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                // e.printStackTrace();
-                System.out.println("O ST não conseguiu criar thread - erro de ligaçao com client");
-            }
+				System.out.println("Erro na execucao do servidor: "+e);
+				System.exit(1);
+			}
             
         }
     }
