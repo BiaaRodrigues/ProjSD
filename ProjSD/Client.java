@@ -164,7 +164,7 @@ public class Client {
                             Instant now_instant = Instant.now();
                             // fazer a string e enviar pelo socket
                             String humidity_msg = "getHumidity "+now_instant;
-                            System.out.println(humidity_msg);
+                            //System.out.println(humidity_msg);
                             out.println(humidity_msg);
                             out.flush(); //lol isto nao era preciso com o ObjectOutputStream 🥱🤷‍♂️ mas temos q usar BufferedReader/PrintWriter pq sao os usados no Serviço de Hum
 
@@ -264,8 +264,7 @@ public class Client {
                         //tenho de conectar ao ST e lá é que faço um metodo-> um for e um println dos valores
                         // do cliente, como não sabemos o tamanho, fazemos in.readnextline, vamos ter fe zer um try 
                         //e um catch
-                        /*
-                        try{while(true){System.out.println(in.readnextLine());} }catch(Exception e){}*/
+                        
                         oos.writeObject("3-getRMIList");
                         String response_st;
                         try {
@@ -348,7 +347,7 @@ public class Client {
                     break;
                 
                 case "RMIRegistado" : 
-                    System.out.println("Serviço RMI Criado com Sucesso!");
+                    System.out.println("Serviço RMI criado com sucesso!");
                     break;
                 
                 case "SocketExiste" : 
@@ -356,11 +355,11 @@ public class Client {
                     break;
                 
                 case "SocketRegistado" : 
-                    System.out.println("Serviço Socket Criado com Sucesso!");
+                    System.out.println("Serviço Socket criado com sucesso!");
                     break;
                 
                 case "RegistoInv" : 
-                    System.out.println("Registo Invalido, no tipo de comun tem que ser 'rmi' ou 'socket'");
+                    System.out.println("Registo Invalido, no tipo tem que ser 'rmi' ou 'socket'");
                     break;
             }
         } catch (ClassNotFoundException e) {
