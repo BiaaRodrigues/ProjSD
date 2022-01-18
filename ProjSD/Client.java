@@ -17,16 +17,14 @@ import java.time.Instant;
 public class Client {
     static final int DEFAULT_PORT_SI=2002;
     static final int DEFAULT_PORT_ST=2001;
-    static final String DEFAULT_HOST="127.0.0.1";
+    static final String DEFAULT_HOST="26.66.66.146";
     private static Scanner scanner = new Scanner(System. in);
     private static ObjectOutputStream oos;
     private static ObjectInputStream ois;
     private static Socket socket = null;
-    //ListService x = new ListSevice();
-
+    
     public static void main(String[] args) {
 
-        
         boolean running = true;
 
         while(running){
@@ -329,14 +327,12 @@ public class Client {
         // a maneira como a chave unica do serviço é calculada está explicada no enunciado -> ip+porta para os sockets ...
 
         System.out.println("Chave de Registo: " + chave);
-
-
-        //System.out.println(msg);
+      
 
         //enviar a string para o ST
         oos.writeObject(msg);
 
-        //oos.newLine();
+       
 
         try {
             msg = (String) ois.readObject();

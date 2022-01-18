@@ -12,7 +12,7 @@ public class SI_Hander implements Runnable {
     private ObjectInputStream in;
     // porta e ip do ST, que vamos enviar o client
     private static String port_st = "2001";
-    private static String st_ip = "127.0.0.1";
+    private static String st_ip = "26.66.83.94"; //ip do ST
 
 
     public SI_Hander(Socket socket){
