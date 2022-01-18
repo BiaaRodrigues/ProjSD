@@ -17,7 +17,7 @@ import java.time.Instant;
 public class Client {
     static final int DEFAULT_PORT_SI=2002;
     static final int DEFAULT_PORT_ST=2001;
-    static final String DEFAULT_HOST_SI="26.66.66.146";
+    private static String st_ip = "26.66.83.94";
     static final String DEFAULT_HOST="26.66.66.146";
     private static Scanner scanner = new Scanner(System. in);
     private static ObjectOutputStream oos;
@@ -55,7 +55,7 @@ public class Client {
                     
                     try {
                         //establish socket connection to server
-                        socket = new Socket(DEFAULT_HOST_SI, DEFAULT_PORT_ST);
+                        socket = new Socket(st_ip, DEFAULT_PORT_ST);
                         scanner.nextLine();
                         // se nos ligarmos ao ST temos que pedir nif e hash ao cliente de modo a se autenticar:
                         String nif_login, hash_login, msg;
@@ -202,7 +202,7 @@ public class Client {
         String nif = scanner.nextLine();
         //establish socket connection to server
         try {
-            socket = new Socket(DEFAULT_HOST_SI, DEFAULT_PORT_SI);
+            socket = new Socket(DEFAULT_HOST, DEFAULT_PORT_SI);
             
             //write to socket using ObjectOutputStream
             /* Vamos enviar o NIF para o SI a partir do qual ele vai calcular uma hash */
