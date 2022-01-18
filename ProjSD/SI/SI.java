@@ -7,7 +7,7 @@ import java.io.*;
 public class SI {
     //static ServerSocket variable
     private static ServerSocket server;
-    static final String DEFAULT_HOST_SI="26.66.83.94";
+    static final String DEFAULT_HOST_SI="26.66.66.146";
     
     public static void main(String[] args){
         //socket server port on which it will listen
