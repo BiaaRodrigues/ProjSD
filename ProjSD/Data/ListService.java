@@ -68,8 +68,8 @@ public class ListService {
     // passar os hashmap para tabela em string
     public String getSvRMI(){
         String table = "";
-        table = table + "Chave de acesso  |  Ip  |  Porto  |  Descricão  |  Nome  ";
-        table = table + "---------------------------------------------------------";
+        table = table + "Chave de acesso  |  Ip  |  Porto  |  Descricão  |  Nome  + \n";
+        table = table + "--------------------------------------------------------- + \n";
 
         for (String key : rmi_Services.keySet()) {
             if(rmi_Services.get(key).gettTecno().equals("rmi")){
